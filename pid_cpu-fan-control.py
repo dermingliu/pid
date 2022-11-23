@@ -41,22 +41,22 @@ def createConfig ():
 createConfig()
 
 while 1:
-	readConfig()
+        readConfig()
         tFile = open('/sys/class/thermal/thermal_zone0/temp')
         temp = float(tFile.read())
         temperature = temp/1000
-	pid.update(temperature)
-	t = pid.output
-	print ("cpu temperature",t)
-	if t < 0:
-	        target = abs(t)
-		print (target)
-        	targetPwm = max(min( int(target), 100 ),0)
-		print "Target: %.1f C | Current: %.1f C | PWM: %s %%"%(targetT, temperature, targetPwm)
-		pwm.ChangeDutyCycle(targetPwm)
-		time.sleep(0.1)
-	else:
-		targetPwm = 0
-		print ("Stable or counting.......")
+        pid.update(temperature)
+        t = pid.output
+        print ("cpu temperature",t)
+        if t < 0:
+                target = abs(t)
+                print (target)
+                targetPwm = max(min( int(target), 100 ),0)
+                print ("Target: %.1f C | Current: %.1f C | PWM: %s %%" %(targetT, temperature, targetPwm))
+                pwm.ChangeDutyCycle(targetPwm)
+                time.sleep(0.1)
+        else:
+                targetPwm = 0
+                print ("Stable or counting.......")
                 pwm.ChangeDutyCycle(targetPwm)
                 time.sleep(3)
